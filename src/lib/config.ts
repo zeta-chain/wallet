@@ -11,17 +11,11 @@ type Config = {
 };
 
 export const config: Config = {
-  // Wallet name will be seen as the Wallet name
-  walletName: "<wallet-name>",
-  // Wallet icon will be seen as the Wallet icon
+  walletName: "Universal Sign In",
   walletIcon: "<wallet-icon>",
-  // URL of your wallet domain (e.g. https://dynamic.example.com)
-  walletUrl: "<wallet-url>",
-  // Environment ID of your wallet (e.g. 1234567890)
-  environmentId: "<environment-id>",
-  // EIP6963 configuration
+  walletUrl: "https://wallet.zetachain.com",
+  environmentId: "eaec6949-d524-40e7-81d2-80113243499a",
   eip6963: {
-    // RDNS of your wallet (e.g. com.example.wallet)
-    rdns: "<rdns>",
+    rdns: "zetachain.com",
   },
 };
