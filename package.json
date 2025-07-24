@@ -1,7 +1,7 @@
 {
-  "name": "<wallet-package-name>",
-  "author": "<wallet-author>",
-  "description": "<wallet-description>",
+  "name": "@zetachain/wallet",
+  "author": "ZetaChain",
+  "description": "Universal Sign In",
   "version": "0.0.0",
   "type": "module",
   "main": "dist/cjs/index.js",
