@@ -15,6 +15,3 @@ export {
   useUserWallets,
   useWalletOptions,
 } from "@dynamic-labs/sdk-react-core";
-
-// Re-export Dynamic ethers integration
-export { getSigner, getWeb3Provider } from "@dynamic-labs/ethers-v6";
