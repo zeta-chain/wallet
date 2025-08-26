@@ -10,17 +10,34 @@
   "typings": "./dist/types/index.d.ts",
   "license": "ISC",
   "scripts": {
-    "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:types",
-    "build:esm": "tsc --project tsconfig.json --outDir dist/esm && tsc-alias --project tsconfig.json --outDir dist/esm",
-    "build:types": "tsc --project ./tsconfig.json --declarationDir ./dist/types --emitDeclarationOnly --declaration --declarationMap",
-    "build:cjs": "tsc --project ./tsconfig.json --module commonjs --moduleResolution node --outDir ./dist/cjs --removeComments --verbatimModuleSyntax false"
+    "build": "rm -rf dist && tsc --project tsconfig.json --outDir dist/esm && tsc-alias --project tsconfig.json --outDir dist/esm && tsc --project ./tsconfig.json --module commonjs --moduleResolution node --outDir ./dist/cjs --removeComments --verbatimModuleSyntax false && tsc --project ./tsconfig.json --declarationDir ./dist/types --emitDeclarationOnly --declaration --declarationMap",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "format": "prettier --write src/**/*.{ts,tsx}",
+    "format:check": "prettier --check src/**/*.{ts,tsx}",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@dynamic-labs/ethereum": "^4.29.3",
     "@dynamic-labs/global-wallet-client": "^4.15.0",
+    "@dynamic-labs/sdk-react-core": "^4.29.3",
     "@wallet-standard/wallet": "^1.1.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
     "viem": "^2.33.0"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
+    "eslint-plugin-typescript-sort-keys": "^3.3.0",
+    "prettier": "^3.6.2",
     "tsc-alias": "^1.8.10",
     "typescript": "^5.7.3"
   },
@@ -30,6 +47,8 @@
     "@wallet-standard/base": "^1.0.1",
     "@wallet-standard/features": "^1.0.3",
     "@wallet-standard/wallet": "^1.1.0",
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0",
     "viem": "^2.7.12"
   },
   "peerDependenciesMeta": {
@@ -50,10 +69,19 @@
     },
     "@wallet-standard/wallet": {
       "optional": true
+    },
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
     }
   },
   "typesVersions": {
     "*": {
+      "react": [
+        "./dist/types/react/index.d.ts"
+      ],
       "ethereum": [
         "./dist/types/ethereum.d.ts"
       ],
@@ -67,6 +95,11 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/esm/index.js",
       "default": "./dist/cjs/index.js"
+    },
+    "./react": {
+      "types": "./dist/types/react/index.d.ts",
+      "import": "./dist/esm/react/index.js",
+      "default": "./dist/cjs/react/index.js"
     },
     "./ethereum": {
       "types": "./dist/types/ethereum.d.ts",

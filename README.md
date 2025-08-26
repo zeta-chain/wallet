@@ -1,123 +1,140 @@
-# Dynamic Global Wallet Package
+# @zetachain/wallet
 
-This repository provides the base configuration for building a wallet package powered by Dynamic Global Wallet, supporting both EVM and Solana ecosystems.
+Universal Sign In library for ZetaChain applications, providing easy wallet integration with Dynamic.
 
-## Getting Started
+## Installation
 
-Follow these steps to set up your wallet package:
+```bash
+npm install @zetachain/wallet
+# or
+yarn add @zetachain/wallet
+```
 
-1. **Clone the Repository**
+## Usage
 
-   ```bash
-   git clone <repository-url>
-   cd <repository-folder>
-   ```
+### Basic Setup
 
-2. **Install Dependencies**
+```tsx
+import React from 'react';
+import { UniversalSignInContextProvider, DynamicUserProfile } from '@zetachain/wallet';
 
-   ```bash
-   npm install
-   ```
+function App() {
+  return (
+    <UniversalSignInContextProvider
+      environmentId="your-dynamic-environment-id"
+      theme="light"
+    >
+      <div>
+        <h1>My App</h1>
+        <DynamicUserProfile />
+        {/* Your app content */}
+      </div>
+    </UniversalSignInContextProvider>
+  );
+}
 
-3. **Configure Your Wallet Package**
+export default App;
+```
 
-   Update the following fields to customize your wallet package:
+### Advanced Configuration
 
-   ### In `package.json`
+```tsx
+import React from 'react';
+import { 
+  UniversalSignInContextProvider, 
+  evmNetworks,
+  useTheme,
+  useDynamicContext 
+} from '@zetachain/wallet';
 
-   - `wallet-package-name`: Your wallet package’s name.
-   - `wallet-description`: A brief description of your wallet.
-   - `wallet-author`: The author’s name or organization.
+// Custom networks configuration
+const customNetworks = [
+  // Your custom EVM networks
+  ...evmNetworks,
+  {
+    blockExplorerUrls: ['https://your-explorer.com/'],
+    chainId: 123456,
+    chainName: 'Custom Chain',
+    // ... other network properties
+  }
+];
 
-   ### In `src/lib/config.ts`
+function App() {
+  return (
+    <UniversalSignInContextProvider
+      environmentId="your-dynamic-environment-id"
+      theme="dark"
+      overrideNetworks={customNetworks}
+      dynamicSettings={{
+        // Additional Dynamic SDK settings
+      }}
+    >
+      <AppContent />
+    </UniversalSignInContextProvider>
+  );
+}
 
-   - `wallet-name`: Display name of the wallet.
-   - `wallet-icon`: URL or base64 encoded image of your wallet’s icon.
-   - `wallet-url`: URL of your wallet’s configured domain in the [Dynamic dashboard](https://app.dynamic.xyz/).
-   - `environment-id`: Environment ID of your project in the [Dynamic dashboard](https://app.dynamic.xyz/).
+function AppContent() {
+  const { theme, toggleTheme } = useTheme();
+  const { isAuthenticated } = useDynamicContext();
 
-Once completed, your wallet package is configured and ready for testing and publishing.
+  return (
+    <div>
+      <button onClick={toggleTheme}>
+        Switch to {theme === 'light' ? 'dark' : 'light'} mode
+      </button>
+      {isAuthenticated && <p>User is signed in!</p>}
+    </div>
+  );
+}
+```
 
----
+## API Reference
 
-## Testing Your Wallet
+### UniversalSignInContextProvider
 
-After configuring your wallet package, test it locally using a Wallet SDK of your choice. This example demonstrates testing with the `create-dynamic-app` package:
+The main provider component that wraps your app with Dynamic wallet functionality.
 
-1. **Build Your Wallet Package**
+**Props:**
+- `environmentId` (optional): Dynamic environment ID. Defaults to ZetaChain's test environment.
+- `children`: React children elements
+- `theme` (optional): Theme mode - `'light'` or `'dark'`. Defaults to `'light'`.
+- `overrideNetworks` (optional): Custom EVM networks array
+- `walletConnectors` (optional): Custom wallet connectors. Defaults to Ethereum connectors.
+- `dynamicSettings` (optional): Additional settings to pass to DynamicContextProvider
 
-   ```bash
-   npm run build
-   ```
+### Hooks
 
-2. **Pack Your Wallet Package**
+#### useTheme()
+Returns theme context with current theme and toggle function.
 
-   ```bash
-   npm pack
-   ```
+```tsx
+const { theme, toggleTheme } = useTheme();
+```
 
-   This will create a `.tgz` file in your directory.
+### Re-exported Components & Hooks
 
-3. **Create a New Project**
-   In a separate directory, initialize a new project:
+The library re-exports commonly used Dynamic SDK components and hooks:
+- `DynamicUserProfile`: User profile component
+- `useDynamicContext`: Main Dynamic context hook
+- `useIsLoggedIn`: Authentication status hook  
+- `useUserWallets`: User wallets hook
 
-   ```bash
-   npx create-dynamic-app@latest
-   ```
+### Constants
 
-   Select **ReactJS** or **NextJS** as your project type.
+- `evmNetworks`: Default EVM networks configuration
+- `SUPPORTED_CHAINS`: Supported blockchain configurations
+- `SUPPORTED_CHAIN_IDS`: Array of supported chain IDs
 
-4. **Install Your Wallet Package**
+## Development
 
-   ```bash
-   npm install /path/to/your-wallet-package-1.0.0.tgz
-   ```
+### Building
 
-5. **Import Your Wallet**
+```bash
+yarn build
+```
 
-   - For **EVM Wallet**:
-
-     ```javascript
-     import "<wallet-package-name>/eip6963";
-     ```
-
-   - For **Solana Wallet**:
-     ```javascript
-     import "<wallet-package-name>/solana-standard";
-     ```
-
-6. **Use Your Wallet**
-   Your wallet is now ready to use within the project.
-
----
-
-## Publishing Your Wallet
-
-When your wallet package is ready for distribution, follow these steps:
-
-1. **Update Package Version**
-
-   ```bash
-   npm version patch  # for bug fixes
-   # or
-   npm version minor  # for new features
-   # or
-   npm version major  # for breaking changes
-   ```
-
-2. **Build Your Wallet Package**
-
-   ```bash
-   npm run build
-   ```
-
-3. **Publish Your Wallet Package**
-   ```bash
-   npm publish
-   ```
-
-Ensure your package meets the [npm publishing guidelines](https://docs.npmjs.com/cli/v7/commands/npm-publish) before publishing.
-
----
-
-For more details or support, refer to the documentation or contact the Dynamic Global Wallet team.
+This builds the library in multiple formats:
+- ESM: `dist/esm/`
+- CommonJS: `dist/cjs/`
+- TypeScript declarations: `dist/types/`
