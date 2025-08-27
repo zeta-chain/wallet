@@ -5,7 +5,11 @@ export * from "./providers";
 export * from "./hooks";
 
 // Export constants and types that React users might need
-export { DYNAMIC_ENVIRONMENT_IDS, type DynamicEnvironment } from "../constants";
+export {
+  DYNAMIC_ENVIRONMENT_IDS,
+  type DynamicEnvironment,
+  GLOBAL_WALLET_KEY_ID,
+} from "../constants";
 
 // Re-export Dynamic components and hooks that React users might need
 export {
