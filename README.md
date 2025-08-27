@@ -1,6 +1,6 @@
 # @zetachain/wallet
 
-Universal Sign In library for ZetaChain applications, providing easy wallet integration with Dynamic.
+Universal Sign In library for ZetaChain applications, providing streamlined wallet integration with Dynamic SDK.
 
 ## Installation
 
@@ -16,20 +16,27 @@ yarn add @zetachain/wallet
 
 ```tsx
 import React from 'react';
-import { UniversalSignInContextProvider, DynamicUserProfile } from '@zetachain/wallet';
+import { UniversalSignInContextProvider, useConnectUniversalSignIn } from '@zetachain/wallet';
 
 function App() {
   return (
-    <UniversalSignInContextProvider
-      environmentId="your-dynamic-environment-id"
-      theme="light"
-    >
+    <UniversalSignInContextProvider environment="sandbox">
       <div>
-        <h1>My App</h1>
-        <DynamicUserProfile />
+        <h1>My ZetaChain App</h1>
+        <ConnectButton />
         {/* Your app content */}
       </div>
     </UniversalSignInContextProvider>
+  );
+}
+
+function ConnectButton() {
+  const { connectUniversalSignIn } = useConnectUniversalSignIn();
+  
+  return (
+    <button onClick={connectUniversalSignIn}>
+      Connect Universal Sign-In
+    </button>
   );
 }
 
@@ -41,32 +48,27 @@ export default App;
 ```tsx
 import React from 'react';
 import { 
-  UniversalSignInContextProvider, 
-  evmNetworks,
-  useTheme,
+  UniversalSignInContextProvider,
+  useConnectUniversalSignIn,
   useDynamicContext 
 } from '@zetachain/wallet';
 
-// Custom networks configuration
-const customNetworks = [
-  // Your custom EVM networks
-  ...evmNetworks,
-  {
-    blockExplorerUrls: ['https://your-explorer.com/'],
-    chainId: 123456,
-    chainName: 'Custom Chain',
-    // ... other network properties
-  }
-];
-
 function App() {
   return (
-    <UniversalSignInContextProvider
-      environmentId="your-dynamic-environment-id"
-      theme="dark"
-      overrideNetworks={customNetworks}
-      dynamicSettings={{
-        // Additional Dynamic SDK settings
+    <UniversalSignInContextProvider 
+      environment="live"
+      settings={{
+        // Additional wallet connectors (optional)
+        additionalWalletConnectors: [/* custom connectors */],
+        
+        // Override settings (views are fixed and cannot be overridden)
+        overrides: {
+          // Custom overrides except views
+        },
+        
+        // Other Dynamic SDK settings
+        appLogoUrl: 'https://your-app.com/logo.png',
+        appName: 'My ZetaChain App',
       }}
     >
       <AppContent />
@@ -75,15 +77,21 @@ function App() {
 }
 
 function AppContent() {
-  const { theme, toggleTheme } = useTheme();
-  const { isAuthenticated } = useDynamicContext();
+  const { isAuthenticated, user } = useDynamicContext();
+  const { connectUniversalSignIn } = useConnectUniversalSignIn();
 
   return (
     <div>
-      <button onClick={toggleTheme}>
-        Switch to {theme === 'light' ? 'dark' : 'light'} mode
-      </button>
-      {isAuthenticated && <p>User is signed in!</p>}
+      {!isAuthenticated ? (
+        <button onClick={connectUniversalSignIn}>
+          Connect Universal Sign-In
+        </button>
+      ) : (
+        <div>
+          <p>Welcome, {user?.email}!</p>
+          <p>Connected to Universal Sign-In EVM</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -93,38 +101,61 @@ function AppContent() {
 
 ### UniversalSignInContextProvider
 
-The main provider component that wraps your app with Dynamic wallet functionality.
+The main provider component that configures Dynamic SDK for ZetaChain's Universal Sign-In.
 
-**Props:**
-- `environmentId` (optional): Dynamic environment ID. Defaults to ZetaChain's test environment.
+**Required Props:**
+- `environment`: **Required**. Must be either `"sandbox"` (development) or `"live"` (production)
 - `children`: React children elements
-- `theme` (optional): Theme mode - `'light'` or `'dark'`. Defaults to `'light'`.
-- `overrideNetworks` (optional): Custom EVM networks array
-- `walletConnectors` (optional): Custom wallet connectors. Defaults to Ethereum connectors.
-- `dynamicSettings` (optional): Additional settings to pass to DynamicContextProvider
+
+**Optional Props:**
+- `settings`: Dynamic SDK configuration object with the following structure:
+  - `additionalWalletConnectors`: Additional wallet connectors to include alongside the required Ethereum connectors
+  - `overrides`: Dynamic SDK override settings (note: `views` configuration is fixed and cannot be overridden)
+  - All other standard Dynamic SDK settings (appName, appLogoUrl, etc.)
+
+**Protected/Automatic Settings:**
+The following settings are automatically configured and cannot be overridden:
+- `environmentId`: Set based on the `environment` prop
+- `walletConnectors`: Always includes Ethereum connectors + any additional ones you specify
+- `walletsFilter`: Fixed to show only Universal Sign-In EVM wallet
+- `overrides.views`: Fixed to show only wallet login view
 
 ### Hooks
 
-#### useTheme()
-Returns theme context with current theme and toggle function.
+#### useConnectUniversalSignIn()
+Hook that provides a handler to connect to Universal Sign-In EVM.
 
 ```tsx
-const { theme, toggleTheme } = useTheme();
+const { connectUniversalSignIn } = useConnectUniversalSignIn();
+
+// Use in a button click handler
+<button onClick={connectUniversalSignIn}>Connect</button>
 ```
 
-### Re-exported Components & Hooks
+#### useUniversalSignInContext()
+Access the Universal Sign-In context (if you've implemented custom context logic).
+
+### Re-exported Dynamic SDK Components & Hooks
 
 The library re-exports commonly used Dynamic SDK components and hooks:
-- `DynamicUserProfile`: User profile component
-- `useDynamicContext`: Main Dynamic context hook
-- `useIsLoggedIn`: Authentication status hook  
-- `useUserWallets`: User wallets hook
+- `useDynamicContext`: Main Dynamic context hook for authentication state
+- `DynamicUserProfile`: Pre-built user profile component
+- `useUserWallets`: Hook to access connected wallets
+- `useIsLoggedIn`: Simple authentication status hook
 
 ### Constants
 
-- `evmNetworks`: Default EVM networks configuration
-- `SUPPORTED_CHAINS`: Supported blockchain configurations
-- `SUPPORTED_CHAIN_IDS`: Array of supported chain IDs
+- `DYNAMIC_ENVIRONMENT_IDS`: Mapping of environment names to Dynamic environment IDs
+- `GLOBAL_WALLET_KEY_ID`: The wallet key ID for Universal Sign-In EVM ("universalsigninevm")
+
+## Environment Configuration
+
+The library supports two environments:
+
+- **`"sandbox"`**: Development/testing environment
+- **`"live"`**: Production environment
+
+The environment determines which Dynamic environment ID is used internally. You cannot specify a custom `environmentId` - this is managed automatically based on your environment selection to ensure proper configuration.
 
 ## Development
 
