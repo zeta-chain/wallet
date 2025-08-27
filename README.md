@@ -58,9 +58,6 @@ function App() {
     <UniversalSignInContextProvider 
       environment="live"
       settings={{
-        // Additional wallet connectors (optional)
-        additionalWalletConnectors: [/* custom connectors */],
-        
         // Override settings (views are fixed and cannot be overridden)
         overrides: {
           // Custom overrides except views
@@ -109,14 +106,13 @@ The main provider component that configures Dynamic SDK for ZetaChain's Universa
 
 **Optional Props:**
 - `settings`: Dynamic SDK configuration object with the following structure:
-  - `additionalWalletConnectors`: Additional wallet connectors to include alongside the required Ethereum connectors
   - `overrides`: Dynamic SDK override settings (note: `views` configuration is fixed and cannot be overridden)
   - All other standard Dynamic SDK settings (appName, appLogoUrl, etc.)
 
 **Protected/Automatic Settings:**
 The following settings are automatically configured and cannot be overridden:
 - `environmentId`: Set based on the `environment` prop
-- `walletConnectors`: Always includes Ethereum connectors + any additional ones you specify
+- `walletConnectors`: Fixed to use only Ethereum connectors
 - `walletsFilter`: Fixed to show only Universal Sign-In EVM wallet
 - `overrides.views`: Fixed to show only wallet login view
 

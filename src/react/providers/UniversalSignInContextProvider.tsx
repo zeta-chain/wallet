@@ -26,18 +26,12 @@ interface UniversalSignInContextProviderProps
 
   /**
    * Dynamic settings to merge with defaults.
-   * Note: environmentId, walletsFilter, and overrides.views are automatically set and cannot be overridden.
+   * Note: environmentId, walletConnectors, walletsFilter, and overrides.views are automatically set and cannot be overridden.
    */
   settings?: Omit<
     DynamicContextProps["settings"],
-    "environmentId" | "walletsFilter"
+    "environmentId" | "walletConnectors" | "walletsFilter"
   > & {
-    /**
-     * Additional wallet connectors to include alongside the required ZetaChain Ethereum connectors.
-     * The ZetaChain Ethereum wallet will always be included and cannot be removed.
-     */
-    additionalWalletConnectors?: DynamicContextProps["settings"]["walletConnectors"];
-
     /**
      * Override settings (excluding views which are fixed).
      * The views configuration is automatically set to show only wallet login and cannot be customized.
@@ -62,8 +56,8 @@ export const UniversalSignInContextProvider: React.FC<
     EIP6963Emitter(environmentId);
   }, [environmentId]);
 
-  // Extract additionalWalletConnectors and overrides from settings
-  const { additionalWalletConnectors, overrides, ...otherSettings } = settings;
+  // Extract overrides from settings
+  const { overrides, ...otherSettings } = settings;
 
   const dynamicProviderSettings: DynamicContextProps["settings"] = {
     // Merge user settings first
@@ -82,11 +76,8 @@ export const UniversalSignInContextProvider: React.FC<
       ],
     },
 
-    // Always include our wallet connectors + any additional ones
-    walletConnectors: [
-      EthereumWalletConnectors,
-      ...(additionalWalletConnectors || []),
-    ],
+    // Fixed wallet connectors - only Ethereum connectors are supported
+    walletConnectors: [EthereumWalletConnectors],
 
     // Fixed wallet filter - cannot be overridden
     walletsFilter: wallets =>
