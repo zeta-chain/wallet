@@ -1,0 +1,8 @@
+node_modules
+src
+scripts
+public
+tsconfig.json
+yarn.lock
+*.log
+.DS_Store

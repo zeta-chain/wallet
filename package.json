@@ -10,8 +10,13 @@
   "types": "dist/types/index.d.ts",
   "typings": "./dist/types/index.d.ts",
   "license": "ISC",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "rm -rf dist && tsc --project tsconfig.json --outDir dist/esm && tsc-alias --project tsconfig.json --outDir dist/esm && tsc --project ./tsconfig.json --module commonjs --moduleResolution node --outDir ./dist/cjs --removeComments --verbatimModuleSyntax false && tsc --project ./tsconfig.json --declarationDir ./dist/types --emitDeclarationOnly --declaration --declarationMap",
+    "prepublishOnly": "npm run build",
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix",
     "format": "prettier --write src/**/*.{ts,tsx}",
