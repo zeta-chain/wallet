@@ -15,8 +15,11 @@ yarn add @zetachain/wallet
 ### Basic Setup
 
 ```tsx
-import React from 'react';
-import { UniversalSignInContextProvider, useConnectUniversalSignIn } from '@zetachain/wallet/react';
+import React from "react";
+import {
+  UniversalSignInContextProvider,
+  useConnectUniversalSignIn,
+} from "@zetachain/wallet/react";
 
 function App() {
   return (
@@ -32,11 +35,9 @@ function App() {
 
 function ConnectButton() {
   const { connectUniversalSignIn } = useConnectUniversalSignIn();
-  
+
   return (
-    <button onClick={connectUniversalSignIn}>
-      Connect Universal Sign-In
-    </button>
+    <button onClick={connectUniversalSignIn}>Connect Universal Sign-In</button>
   );
 }
 
@@ -46,25 +47,25 @@ export default App;
 ### Advanced Configuration
 
 ```tsx
-import React from 'react';
-import { 
+import React from "react";
+import {
   UniversalSignInContextProvider,
   useConnectUniversalSignIn,
-  useUniversalSignInContext 
-} from '@zetachain/wallet/react';
+  useUniversalSignInContext,
+} from "@zetachain/wallet/react";
 
 function App() {
   return (
-    <UniversalSignInContextProvider 
+    <UniversalSignInContextProvider
       environment="live"
       settings={{
         overrides: {
           // Your custom overrides here
         },
-        
+
         // Other Dynamic SDK settings
-        appLogoUrl: 'https://your-app.com/logo.png',
-        appName: 'My ZetaChain App',
+        appLogoUrl: "https://your-app.com/logo.png",
+        appName: "My ZetaChain App",
       }}
     >
       <AppContent />
@@ -100,10 +101,12 @@ function AppContent() {
 The main provider component that configures Dynamic SDK for ZetaChain's Universal Sign-In.
 
 **Required Props:**
+
 - `environment`: **Required**. Must be either `"sandbox"` (development) or `"live"` (production)
 - `children`: React children elements
 
 **Optional Props:**
+
 - `settings`: Dynamic SDK configuration object with the following structure:
   - `cssOverrides`: Custom CSS styles (built-in overrides are applied after user styles for consistent UX)
   - `overrides`: Dynamic SDK override settings
@@ -111,10 +114,12 @@ The main provider component that configures Dynamic SDK for ZetaChain's Universa
 
 **Protected/Automatic Settings:**
 The following settings are automatically configured and cannot be overridden:
+
 - `environmentId`: Set based on the `environment` prop
 - `walletConnectors`: Automatically configured with appropriate wallet connectors
 
 **CSS Override Behavior:**
+
 - User-provided `cssOverrides` are applied first
 - Built-in CSS overrides (e.g., hiding the back button) are applied last to ensure consistent UX
 - This means built-in styles take precedence over user styles when there are conflicts
@@ -122,25 +127,29 @@ The following settings are automatically configured and cannot be overridden:
 ### Hooks
 
 #### useConnectUniversalSignIn()
+
 Hook that provides a handler to connect to Universal Sign-In EVM.
 
 ```tsx
 const { connectUniversalSignIn } = useConnectUniversalSignIn();
 
 // Use in a button click handler
-<button onClick={connectUniversalSignIn}>Connect</button>
+<button onClick={connectUniversalSignIn}>Connect</button>;
 ```
 
 #### useUniversalSignInContext()
+
 Access the Universal Sign-In authentication state and user information.
 
 ### Re-exported Dynamic SDK Components & Hooks
 
 **From `@zetachain/wallet/react`:**
+
 - Everything from `@dynamic-labs/sdk-react-core` (React components, hooks, types, utilities)
 
 **From `@zetachain/wallet` (main package):**
-- Core wallet functionality from `@dynamic-labs/global-wallet-client/features`  
+
+- Core wallet functionality from `@dynamic-labs/global-wallet-client/features`
 - Key Ethereum utilities from `@dynamic-labs/ethereum` (connectors, helpers, etc.)
 - Ethers.js integration from `@dynamic-labs/ethers-v6`
 
@@ -166,6 +175,7 @@ yarn build
 ```
 
 This builds the library in multiple formats:
+
 - ESM: `dist/esm/`
 - CommonJS: `dist/cjs/`
 - TypeScript declarations: `dist/types/`
