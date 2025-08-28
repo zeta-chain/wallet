@@ -62,11 +62,12 @@ export const UniversalSignInContextProvider: React.FC<
   const dynamicProviderSettings: DynamicContextProps["settings"] = {
     // Merge user settings first
     ...settings,
-    // Set the environment ID based on the environment prop
-    environmentId,
 
     // Combine built-in CSS overrides with user-provided ones
     cssOverrides: mergedCssOverrides,
+
+    // Set the environment ID based on the environment prop
+    environmentId,
 
     walletConnectors: [EthereumWalletConnectors],
   };

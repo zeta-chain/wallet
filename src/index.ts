@@ -11,16 +11,16 @@ export { getSigner, getWeb3Provider } from "@dynamic-labs/ethers-v6";
 
 // Export key ethereum utilities (excluding isEthereumWallet due to conflict with global-wallet-client)
 export {
-  EthereumWalletConnectors,
-  EthereumWalletConnector,
   createConnector,
-  PhantomEvm,
+  EthereumInjectedConnector,
+  EthereumWalletConnector,
+  EthereumWalletConnectors,
+  EthProviderHelper,
   ExodusEvm,
   FallbackEvmConnector,
   fetchInjectedWalletConnector,
   injectedWalletOverrides,
-  EthereumInjectedConnector,
-  EthProviderHelper,
+  PhantomEvm,
 } from "@dynamic-labs/ethereum";
 
 export default Wallet;
