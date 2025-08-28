@@ -38,7 +38,7 @@ jobs:
 
       - name: Publish to NPM
         run: yarn publish --new-version ${GITHUB_REF#refs/tags/v} --tag ${{
-          steps.determine-npm-tag.outputs.NPM_TAG }} --no-git-tag-version
+          steps.determine-npm-tag.outputs.NPM_TAG }} --no-git-tag-version --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_REF: ${{ github.ref }}
