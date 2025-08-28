@@ -1,5 +1,4 @@
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import { SdkViewSectionType, SdkViewType } from "@dynamic-labs/sdk-api-core";
 import {
   type DynamicContextProps,
   DynamicContextProvider,
@@ -9,7 +8,6 @@ import React, { useEffect } from "react";
 import {
   DYNAMIC_ENVIRONMENT_IDS,
   type DynamicEnvironment,
-  GLOBAL_WALLET_KEY_ID,
 } from "../../constants";
 import { EIP6963Emitter } from "../../ethereum";
 
@@ -26,18 +24,13 @@ interface UniversalSignInContextProviderProps
 
   /**
    * Dynamic settings to merge with defaults.
-   * Note: environmentId, walletConnectors, walletsFilter, and overrides.views are automatically set and cannot be overridden.
+   * Note: environmentId and walletConnectors are automatically set and cannot be overridden.
+   * Built-in CSS overrides are applied after user-provided cssOverrides to ensure consistent UX.
    */
   settings?: Omit<
     DynamicContextProps["settings"],
-    "environmentId" | "walletConnectors" | "walletsFilter"
-  > & {
-    /**
-     * Override settings (excluding views which are fixed).
-     * The views configuration is automatically set to show only wallet login and cannot be customized.
-     */
-    overrides?: Omit<DynamicContextProps["settings"]["overrides"], "views">;
-  };
+    "environmentId" | "walletConnectors"
+  >;
 }
 
 export const UniversalSignInContextProvider: React.FC<
@@ -56,32 +49,26 @@ export const UniversalSignInContextProvider: React.FC<
     EIP6963Emitter(environmentId);
   }, [environmentId]);
 
-  // Extract overrides from settings
-  const { overrides, ...otherSettings } = settings;
+  const builtInCssOverrides = `
+    button[data-testid="back-button"] {
+      display: none;
+    }
+  `;
+
+  // Merge user CSS first, then built-in CSS (built-in styles applied last for consistency)
+  // Add newline separator if user CSS exists to prevent malformed CSS
+  const mergedCssOverrides = `${settings.cssOverrides || ""}${settings.cssOverrides ? "\n" : ""}${builtInCssOverrides}`;
 
   const dynamicProviderSettings: DynamicContextProps["settings"] = {
     // Merge user settings first
-    ...otherSettings,
+    ...settings,
     // Set the environment ID based on the environment prop
     environmentId,
 
-    // Merge user overrides with fixed views configuration
-    overrides: {
-      ...overrides,
-      views: [
-        {
-          sections: [{ type: SdkViewSectionType.Wallet }],
-          type: SdkViewType.Login,
-        },
-      ],
-    },
+    // Combine built-in CSS overrides with user-provided ones
+    cssOverrides: mergedCssOverrides,
 
-    // Fixed wallet connectors - only Ethereum connectors are supported
     walletConnectors: [EthereumWalletConnectors],
-
-    // Fixed wallet filter - cannot be overridden
-    walletsFilter: wallets =>
-      wallets.filter(w => w.key === GLOBAL_WALLET_KEY_ID),
   };
 
   return (

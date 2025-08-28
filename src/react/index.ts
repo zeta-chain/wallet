@@ -4,18 +4,10 @@ export * from "./providers";
 // Export hooks
 export * from "./hooks";
 
-// Export constants and types that React users might need
+// Export types that React users might need
 export {
-  DYNAMIC_ENVIRONMENT_IDS,
   type DynamicEnvironment,
-  GLOBAL_WALLET_KEY_ID,
 } from "../constants";
 
-// Re-export Dynamic components and hooks that React users might need
-export {
-  DynamicUserProfile,
-  DynamicWidget,
-  useIsLoggedIn,
-  useUserWallets,
-  useWalletOptions,
-} from "@dynamic-labs/sdk-react-core";
+// Re-export React-specific Dynamic SDK components and hooks
+export * from "@dynamic-labs/sdk-react-core";
