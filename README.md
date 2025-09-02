@@ -151,11 +151,53 @@ Access the Universal Sign-In authentication state and user information.
 
 - Core wallet functionality from `@dynamic-labs/global-wallet-client/features`
 - Key Ethereum utilities from `@dynamic-labs/ethereum` (connectors, helpers, etc.)
+
+**From `@zetachain/wallet/ethers`:**
+
 - Ethers.js integration from `@dynamic-labs/ethers-v6`
+
+**From `@zetachain/wallet/viem`:**
+
+- Viem integration utilities including `getViemWalletClient()` function
 
 This means you never need to install Dynamic SDK packages directly.
 
 For authentication state and user information, use `useUniversalSignInContext`.
+
+## Viem Integration
+
+For applications using Viem, you can access wallet functionality through the dedicated Viem exports:
+
+```tsx
+import { getViemWalletClient } from "@zetachain/wallet/viem";
+import { useUniversalSignInContext } from "@zetachain/wallet/react";
+import { parseEther } from "viem";
+
+function SendTransaction() {
+  const { primaryWallet } = useUniversalSignInContext();
+
+  const handleSend = async () => {
+    if (!primaryWallet) return;
+
+    const walletClient = getViemWalletClient(primaryWallet);
+
+    const hash = await walletClient.sendTransaction({
+      to: "0x...",
+      value: parseEther("1.0"),
+    });
+
+    console.log("Transaction hash:", hash);
+  };
+
+  return <button onClick={handleSend}>Send Transaction</button>;
+}
+```
+
+**Available Viem exports:**
+
+- `getViemWalletClient(primaryWallet)`: Extracts a Viem WalletClient from a Primary Wallet instance
+- `PrimaryWallet`: Type for the base primary wallet
+- `PrimaryWalletWithViemWalletClient`: Type for primary wallet with Viem support
 
 ## Environment Configuration
 

@@ -5,6 +5,7 @@ export * from "@dynamic-labs/global-wallet-client/features";
 
 // Export constants and types
 export { DYNAMIC_ENVIRONMENT_IDS, type DynamicEnvironment } from "./constants";
+export type { PrimaryWallet } from "./types";
 
 // Export key ethereum utilities (excluding isEthereumWallet due to conflict with global-wallet-client)
 export {
