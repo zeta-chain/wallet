@@ -109,6 +109,7 @@ The main provider component that configures Dynamic SDK for ZetaChain's Universa
 
 - `settings`: Dynamic SDK configuration object with the following structure:
   - `cssOverrides`: Custom CSS styles (built-in overrides are applied after user styles for consistent UX)
+  - `walletConnectPreferredChains`: Array of preferred chain IDs for WalletConnect (defaults to `["eip155:7000"]`)
   - `overrides`: Dynamic SDK override settings
   - All other standard Dynamic SDK settings (appName, appLogoUrl, etc.)
 

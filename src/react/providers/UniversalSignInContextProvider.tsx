@@ -69,6 +69,11 @@ export const UniversalSignInContextProvider: React.FC<
     // Set the environment ID based on the environment prop
     environmentId,
 
+    // Provide default walletConnectPreferredChains if not set in user settings
+    walletConnectPreferredChains: settings.walletConnectPreferredChains || [
+      "eip155:7000",
+    ],
+
     walletConnectors: [EthereumWalletConnectors],
   };
 
