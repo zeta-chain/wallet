@@ -15,3 +15,8 @@ export type DynamicEnvironment = keyof typeof DYNAMIC_ENVIRONMENT_IDS;
  * Global wallet key ID for universal sign-in EVM
  */
 export const GLOBAL_WALLET_KEY_ID = "universalsigninevm";
+
+/**
+ * ZetaChain mainnet chain ID
+ */
+export const ZETACHAIN_MAINNET_CHAIN_ID = 7000;

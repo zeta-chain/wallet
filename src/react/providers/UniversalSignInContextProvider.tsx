@@ -10,6 +10,7 @@ import {
   type DynamicEnvironment,
 } from "../../constants";
 import { EIP6963Emitter } from "../../ethereum";
+import { useAutoNetworkSwitchOnConnection } from "../hooks/useAutoNetworkSwitchOnConnection";
 
 interface UniversalSignInContextProviderProps
   extends Omit<DynamicContextProps, "settings"> {
@@ -48,6 +49,9 @@ export const UniversalSignInContextProvider: React.FC<
   useEffect(() => {
     EIP6963Emitter(environmentId);
   }, [environmentId]);
+
+  // Automatically switch to ZetaChain mainnet when a wallet is first connected
+  useAutoNetworkSwitchOnConnection();
 
   const builtInCssOverrides = `
     button[data-testid="back-button"] {
