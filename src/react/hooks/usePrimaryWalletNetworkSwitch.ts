@@ -1,10 +1,11 @@
 import { dynamicEvents } from "@dynamic-labs/sdk-react-core";
 import { useCallback, useEffect, useRef } from "react";
 
+import { ZETACHAIN_MAINNET_CHAIN_ID } from "../../constants";
 import type { PrimaryWallet } from "../../types";
 
 /**
- * Custom hook that automatically switches the network to chain ID 7000
+ * Custom hook that automatically switches the network to ZetaChain mainnet (chain ID 7000)
  * when a wallet is first connected (not when switching between existing wallets).
  */
 export const useAutoNetworkSwitchOnConnection = () => {
@@ -18,7 +19,7 @@ export const useAutoNetworkSwitchOnConnection = () => {
       // Skip when switching between existing wallets (wallet A -> wallet B)
       if (newPrimaryWallet && !previousWallet) {
         if (newPrimaryWallet.connector?.supportsNetworkSwitching()) {
-          void newPrimaryWallet.switchNetwork(7000);
+          void newPrimaryWallet.switchNetwork(ZETACHAIN_MAINNET_CHAIN_ID);
         }
       }
 

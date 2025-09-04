@@ -50,7 +50,7 @@ export const UniversalSignInContextProvider: React.FC<
     EIP6963Emitter(environmentId);
   }, [environmentId]);
 
-  // Automatically switch to chain ID 7000 when a wallet is first connected
+  // Automatically switch to ZetaChain mainnet when a wallet is first connected
   useAutoNetworkSwitchOnConnection();
 
   const builtInCssOverrides = `
