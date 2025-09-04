@@ -10,7 +10,7 @@ import {
   type DynamicEnvironment,
 } from "../../constants";
 import { EIP6963Emitter } from "../../ethereum";
-import { useAutoNetworkSwitchOnConnection } from "../hooks/usePrimaryWalletNetworkSwitch";
+import { useAutoNetworkSwitchOnConnection } from "../hooks/useAutoNetworkSwitchOnConnection";
 
 interface UniversalSignInContextProviderProps
   extends Omit<DynamicContextProps, "settings"> {
