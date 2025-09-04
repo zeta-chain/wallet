@@ -3,9 +3,21 @@ import {
   GlobalWalletClient,
 } from "@dynamic-labs/global-wallet-client";
 
-import { config } from "./config";
+import { DYNAMIC_ENVIRONMENT_IDS } from "../constants";
 
 let walletInstance: GlobalWalletClient | null = null;
+
+/**
+ * Get the wallet URL based on the environment ID
+ */
+const getWalletUrl = (environmentId: string): string => {
+  // Check if this is the live environment
+  if (environmentId === DYNAMIC_ENVIRONMENT_IDS.live) {
+    return "https://wallet.zetachain.com";
+  }
+  // Default to testnet for sandbox or any other environment
+  return "https://testnet.wallet.zetachain.com";
+};
 
 /**
  * Get or create the GlobalWalletClient instance with the specified environment ID
@@ -15,20 +27,9 @@ export const getWallet = (environmentId: string): GlobalWalletClient => {
     walletInstance = createGlobalWalletClient({
       environmentId,
       popup: {
-        url: config.walletUrl,
+        url: getWalletUrl(environmentId),
       },
     });
   }
   return walletInstance;
 };
-
-// Default export for backward compatibility - uses sandbox environment
-// This will be replaced by the proper environment when getWallet is called
-const Wallet: GlobalWalletClient = createGlobalWalletClient({
-  environmentId: "sandbox-placeholder", // Will be replaced
-  popup: {
-    url: config.walletUrl,
-  },
-});
-
-export default Wallet;

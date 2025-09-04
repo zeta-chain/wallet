@@ -1,7 +1,8 @@
-import Wallet from "./lib/wallet";
-
 // Core wallet exports
 export * from "@dynamic-labs/global-wallet-client/features";
+
+// Export wallet utilities
+export { getWallet } from "./lib/wallet";
 
 // Export constants and types
 export { DYNAMIC_ENVIRONMENT_IDS, type DynamicEnvironment } from "./constants";
@@ -20,5 +21,3 @@ export {
   injectedWalletOverrides,
   PhantomEvm,
 } from "@dynamic-labs/ethereum";
-
-export default Wallet;
