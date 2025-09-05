@@ -5,7 +5,7 @@ import {
 
 import { DYNAMIC_ENVIRONMENT_IDS } from "../constants";
 
-let walletInstance: GlobalWalletClient | null = null;
+const walletInstances = new Map<string, GlobalWalletClient>();
 
 /**
  * Get the wallet URL based on the environment ID
@@ -23,13 +23,14 @@ const getWalletUrl = (environmentId: string): string => {
  * Get or create the GlobalWalletClient instance with the specified environment ID
  */
 export const getWallet = (environmentId: string): GlobalWalletClient => {
-  if (!walletInstance) {
-    walletInstance = createGlobalWalletClient({
+  if (!walletInstances.has(environmentId)) {
+    const walletInstance = createGlobalWalletClient({
       environmentId,
       popup: {
         url: getWalletUrl(environmentId),
       },
     });
+    walletInstances.set(environmentId, walletInstance);
   }
-  return walletInstance;
+  return walletInstances.get(environmentId)!;
 };
