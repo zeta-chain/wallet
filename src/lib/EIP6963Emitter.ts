@@ -6,15 +6,15 @@ import {
 import { config } from "./config";
 import { getWallet } from "./wallet";
 
-let hasEmitted = false;
+const emittedEnvironments = new Set<string>();
 
 export const EIP6963Emitter = (environmentId: string) => {
-  // Ensure we only emit once per app lifetime
-  if (hasEmitted) {
+  // Ensure we only emit once per environment
+  if (emittedEnvironments.has(environmentId)) {
     return;
   }
 
-  hasEmitted = true;
+  emittedEnvironments.add(environmentId);
 
   // Get wallet instance with the proper environment ID
   const wallet = getWallet(environmentId);
