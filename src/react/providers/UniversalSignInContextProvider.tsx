@@ -91,7 +91,7 @@ export const UniversalSignInContextProvider: React.FC<
         const userNetworks =
           typeof evmNetworksUserOverride === "function"
             ? evmNetworksUserOverride(dashboardNetworks)
-            : evmNetworksUserOverride || dashboardNetworks;
+            : (evmNetworksUserOverride ?? dashboardNetworks);
 
         const requiredNetworksChainIds = Object.values(
           REQUIRED_NETWORKS_CHAIN_IDS
