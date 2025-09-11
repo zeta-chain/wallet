@@ -209,6 +209,29 @@ The library supports two environments:
 
 The environment determines which Dynamic environment ID is used internally. You cannot specify a custom `environmentId` - this is managed automatically based on your environment selection to ensure proper configuration.
 
+## Network Management
+
+**Automatic Network Inclusion**: ZetaChain and Ethereum networks are automatically included based on ZetaChain's Dynamic environment configuration. Users can add additional custom networks via `settings.overrides.evmNetworks`.
+
+```tsx
+<UniversalSignInContextProvider
+  environment="live"
+  settings={{
+    overrides: {
+      // Add your own networks
+      evmNetworks: [myCustomNetwork]
+    }
+  }}
+>
+```
+
+**Network Features**:
+
+- Required ZetaChain and Ethereum networks are always available
+- Custom networks are merged with required ones
+- Duplicate networks (same chainId) are automatically handled
+- All networks are sorted alphabetically for consistent display
+
 ## Development
 
 ### Building

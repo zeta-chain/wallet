@@ -2,12 +2,14 @@ import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import {
   type DynamicContextProps,
   DynamicContextProvider,
+  mergeNetworks,
 } from "@dynamic-labs/sdk-react-core";
 import React, { useEffect } from "react";
 
 import {
   DYNAMIC_ENVIRONMENT_IDS,
   type DynamicEnvironment,
+  REQUIRED_NETWORKS_CHAIN_IDS,
 } from "../../constants";
 import { EIP6963Emitter } from "../../ethereum";
 import { useAutoNetworkSwitchOnConnection } from "../hooks/useAutoNetworkSwitchOnConnection";
@@ -22,6 +24,12 @@ interface UniversalSignInContextProviderProps
    * This must be explicitly specified - no default is provided to prevent accidental production usage.
    */
   environment: DynamicEnvironment;
+
+  /**
+   * Chain ID to switch to when a wallet is first connected.
+   * Defaults to ZetaChain mainnet (7000).
+   */
+  initialChainId?: number;
 
   /**
    * Dynamic settings to merge with defaults.
@@ -40,6 +48,7 @@ export const UniversalSignInContextProvider: React.FC<
   children,
   environment,
   settings = {},
+  initialChainId,
   ...otherProps
 }: UniversalSignInContextProviderProps) => {
   // Get the environment ID based on the selected environment
@@ -50,8 +59,8 @@ export const UniversalSignInContextProvider: React.FC<
     EIP6963Emitter(environmentId);
   }, [environmentId]);
 
-  // Automatically switch to ZetaChain mainnet when a wallet is first connected
-  useAutoNetworkSwitchOnConnection();
+  // Automatically switch to specified chain when a wallet is first connected
+  useAutoNetworkSwitchOnConnection(initialChainId);
 
   const builtInCssOverrides = `
     button[data-testid="back-button"] {
@@ -72,6 +81,34 @@ export const UniversalSignInContextProvider: React.FC<
 
     // Set the environment ID based on the environment prop
     environmentId,
+
+    // Merge user overrides while ensuring required networks are always present
+    overrides: {
+      ...settings.overrides,
+      evmNetworks: (dashboardNetworks) => {
+        // First merge user-provided networks if they exist
+        const evmNetworksUserOverride = settings.overrides?.evmNetworks;
+        const userNetworks =
+          typeof evmNetworksUserOverride === "function"
+            ? evmNetworksUserOverride(dashboardNetworks)
+            : evmNetworksUserOverride || dashboardNetworks;
+
+        const requiredNetworksChainIds = Object.values(
+          REQUIRED_NETWORKS_CHAIN_IDS
+        );
+        const requiredNetworks = dashboardNetworks.filter((network) =>
+          requiredNetworksChainIds.includes(Number(network.chainId))
+        );
+
+        // Then merge with required networks to ensure Ethereum and ZetaChain are always present
+        const merged = mergeNetworks(requiredNetworks, userNetworks);
+
+        // Sort networks alphabetically by name for consistent ordering
+        const sorted = merged.sort((a, b) => a.name.localeCompare(b.name));
+
+        return sorted;
+      },
+    },
 
     // Provide default walletConnectPreferredChains if not set in user settings
     walletConnectPreferredChains: settings.walletConnectPreferredChains || [
