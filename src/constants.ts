@@ -16,7 +16,9 @@ export type DynamicEnvironment = keyof typeof DYNAMIC_ENVIRONMENT_IDS;
  */
 export const GLOBAL_WALLET_KEY_ID = "universalsigninevm";
 
-/**
- * ZetaChain mainnet chain ID
- */
-export const ZETACHAIN_MAINNET_CHAIN_ID = 7000;
+export const REQUIRED_NETWORKS_CHAIN_IDS = {
+  ETHEREUM_MAINNET: 1,
+  ETHEREUM_SEPOLIA: 11155111,
+  ZETACHAIN_MAINNET: 7000,
+  ZETACHAIN_TESTNET: 7001,
+};

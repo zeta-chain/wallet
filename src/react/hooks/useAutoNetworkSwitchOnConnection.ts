@@ -1,14 +1,18 @@
 import { dynamicEvents } from "@dynamic-labs/sdk-react-core";
 import { useCallback, useEffect, useRef } from "react";
 
-import { ZETACHAIN_MAINNET_CHAIN_ID } from "../../constants";
+import { REQUIRED_NETWORKS_CHAIN_IDS } from "../../constants";
 import type { PrimaryWallet } from "../../types";
 
 /**
- * Custom hook that automatically switches the network to ZetaChain mainnet (chain ID 7000)
+ * Custom hook that automatically switches the network to a specified chain
  * when a wallet is first connected (not when switching between existing wallets).
+ *
+ * @param chainId - The chain ID to switch to (defaults to ZetaChain mainnet)
  */
-export const useAutoNetworkSwitchOnConnection = () => {
+export const useAutoNetworkSwitchOnConnection = (
+  chainId: number = REQUIRED_NETWORKS_CHAIN_IDS.ZETACHAIN_MAINNET
+) => {
   const previousPrimaryWalletRef = useRef<PrimaryWallet | null>(null);
 
   const handlePrimaryWalletChanged = useCallback(
@@ -19,14 +23,14 @@ export const useAutoNetworkSwitchOnConnection = () => {
       // Skip when switching between existing wallets (wallet A -> wallet B)
       if (newPrimaryWallet && !previousWallet) {
         if (newPrimaryWallet.connector?.supportsNetworkSwitching()) {
-          void newPrimaryWallet.switchNetwork(ZETACHAIN_MAINNET_CHAIN_ID);
+          void newPrimaryWallet.switchNetwork(chainId);
         }
       }
 
       // Update the ref to track the current wallet for next comparison
       previousPrimaryWalletRef.current = newPrimaryWallet;
     },
-    []
+    [chainId]
   );
 
   useEffect(() => {
