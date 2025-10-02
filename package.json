@@ -28,6 +28,7 @@
     "@dynamic-labs/ethers-v6": "4.29.4",
     "@dynamic-labs/global-wallet-client": "4.15.0",
     "@dynamic-labs/sdk-react-core": "4.29.4",
+    "@dynamic-labs/solana": "4.29.4",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@wallet-standard/wallet": "^1.1.0",
     "react": "^19.1.1",
@@ -36,8 +37,7 @@
   },
   "resolutions": {
     "@dynamic-labs/wallet-connector-core": "4.29.4",
-    "**/@dynamic-labs/wallet-connector-core": "4.29.4",
-    "@noble/hashes": "1.8.0"
+    "**/@dynamic-labs/wallet-connector-core": "4.29.4"
   },
   "devDependencies": {
     "@types/react": "^19.1.11",
