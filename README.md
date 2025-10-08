@@ -200,6 +200,42 @@ function SendTransaction() {
 - `PrimaryWallet`: Type for the base primary wallet
 - `PrimaryWalletWithViemWalletClient`: Type for primary wallet with Viem support
 
+## Solana Integration
+
+For Solana wallets, the library provides type-safe access to the `getSigner()` method through type extensions.
+
+```typescript
+import { type PrimaryWallet } from '@zetachain/wallet';
+import { getSolanaWalletAdapter } from '@zetachain/wallet/solana';
+
+function SolanaTransactionButton({ primaryWallet }) {
+  const handleSolanaTransaction = async () => {
+    try {
+      // getSolanaWalletAdapter handles the Solana wallet check internally
+      const walletAdapter = await getSolanaWalletAdapter(primaryWallet);
+      console.log('Public key:', walletAdapter.publicKey.toBase58());
+
+      if (walletAdapter.signTransaction) {
+        const signedTx = await walletAdapter.signTransaction(transaction);
+      }
+    } catch (error) {
+      console.error('Not a Solana wallet or transaction failed:', error);
+      // Handle non-Solana wallet or other errors gracefully
+    }
+  };
+
+  return <button onClick={handleSolanaTransaction}>Sign Solana Transaction</button>;
+}
+```
+
+**Available Solana exports:**
+
+- `getSolanaWalletAdapter(primaryWallet)`: Extracts a Solana WalletAdapter from a Primary Wallet instance (includes automatic Solana wallet validation)
+- `PrimaryWalletWithSolanaSigner`: Type for primary wallet with Solana support
+- `SolanaWalletAdapter`: Interface for Solana wallet adapter with signing capabilities
+
+The `getSolanaWalletAdapter` function automatically validates that the wallet is a Solana wallet, so you don't need to check `isSolanaWallet` manually - just handle the error if it's not a Solana wallet.
+
 ## Environment Configuration
 
 The library supports two environments:
