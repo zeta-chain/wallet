@@ -1,3 +1,4 @@
+import { BitcoinWalletConnectors } from "@dynamic-labs/bitcoin";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import {
   type DynamicContextProps,
@@ -116,7 +117,11 @@ export const UniversalSignInContextProvider: React.FC<
       "eip155:7000",
     ],
 
-    walletConnectors: [EthereumWalletConnectors, SolanaWalletConnectors],
+    walletConnectors: [
+      EthereumWalletConnectors,
+      SolanaWalletConnectors,
+      BitcoinWalletConnectors,
+    ],
   };
 
   return (

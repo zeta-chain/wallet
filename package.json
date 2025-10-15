@@ -24,6 +24,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@dynamic-labs/bitcoin": "4.29.4",
     "@dynamic-labs/ethereum": "4.29.4",
     "@dynamic-labs/ethers-v6": "4.29.4",
     "@dynamic-labs/global-wallet-client": "4.15.0",
@@ -104,6 +105,9 @@
       "solana": [
         "./dist/types/solana.d.ts"
       ],
+      "bitcoin": [
+        "./dist/types/bitcoin.d.ts"
+      ],
       "ethers": [
         "./dist/types/ethers.d.ts"
       ],
@@ -132,6 +136,11 @@
       "types": "./dist/types/solana.d.ts",
       "import": "./dist/esm/solana.js",
       "default": "./dist/cjs/solana.js"
+    },
+    "./bitcoin": {
+      "types": "./dist/types/bitcoin.d.ts",
+      "import": "./dist/esm/bitcoin.js",
+      "default": "./dist/cjs/bitcoin.js"
     },
     "./ethers": {
       "types": "./dist/types/ethers.d.ts",
