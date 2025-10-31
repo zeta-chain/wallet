@@ -29,6 +29,7 @@
     "@dynamic-labs/global-wallet-client": "4.15.0",
     "@dynamic-labs/sdk-react-core": "4.29.4",
     "@dynamic-labs/solana": "4.29.4",
+    "@dynamic-labs/sui": "4.29.0",
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@wallet-standard/wallet": "^1.1.0",
     "react": "^19.1.1",
@@ -132,6 +133,11 @@
       "types": "./dist/types/solana.d.ts",
       "import": "./dist/esm/solana.js",
       "default": "./dist/cjs/solana.js"
+    },
+    "./sui": {
+      "types": "./dist/types/sui.d.ts",
+      "import": "./dist/esm/sui.js",
+      "default": "./dist/cjs/sui.js"
     },
     "./ethers": {
       "types": "./dist/types/ethers.d.ts",

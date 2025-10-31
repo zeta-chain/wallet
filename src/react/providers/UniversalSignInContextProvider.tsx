@@ -5,6 +5,7 @@ import {
   mergeNetworks,
 } from "@dynamic-labs/sdk-react-core";
 import { SolanaWalletConnectors } from "@dynamic-labs/solana";
+import { SuiWalletConnectors } from "@dynamic-labs/sui";
 import React, { useEffect } from "react";
 
 import {
@@ -116,7 +117,11 @@ export const UniversalSignInContextProvider: React.FC<
       "eip155:7000",
     ],
 
-    walletConnectors: [EthereumWalletConnectors, SolanaWalletConnectors],
+    walletConnectors: [
+      EthereumWalletConnectors,
+      SolanaWalletConnectors,
+      SuiWalletConnectors,
+    ],
   };
 
   return (
