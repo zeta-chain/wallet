@@ -68,6 +68,12 @@ module.exports = {
       },
     ],
     "import/no-named-as-default": "error",
+    "import/namespace": [
+      "error",
+      {
+        allowComputed: true,
+      },
+    ],
     "prefer-const": "error",
     "no-constant-condition": "error",
     "no-empty": "error",
@@ -97,6 +103,17 @@ module.exports = {
     ".eslintrc.cjs", // Ignore ESLint config file itself
     "dist/**/*", // Ignore build output
     "node_modules/**/*", // Ignore node_modules
+  ],
+  overrides: [
+    {
+      files: ["**/react-native/**/*.{ts,tsx}"],
+      rules: {
+        // React Native is a CommonJS package that doesn't play well with ESLint's namespace checking
+        // The package structure confuses the parser when it tries to validate imports
+        // This is a known limitation when using TypeScript with React Native
+        "import/namespace": "off",
+      },
+    },
   ],
   root: true,
 };
