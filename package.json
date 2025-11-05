@@ -24,9 +24,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@dynamic-labs/client": "4.29.4",
     "@dynamic-labs/ethereum": "4.29.4",
     "@dynamic-labs/ethers-v6": "4.29.4",
     "@dynamic-labs/global-wallet-client": "4.15.0",
+    "@dynamic-labs/react-native-extension": "4.29.4",
     "@dynamic-labs/sdk-react-core": "4.29.4",
     "@dynamic-labs/solana": "4.29.4",
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -65,6 +67,7 @@
     "@wallet-standard/wallet": "^1.1.0",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0",
+    "react-native": "^0.72.0 || ^0.73.0 || ^0.74.0",
     "viem": "^2.7.12"
   },
   "peerDependenciesMeta": {
@@ -91,12 +94,18 @@
     },
     "react-dom": {
       "optional": false
+    },
+    "react-native": {
+      "optional": true
     }
   },
   "typesVersions": {
     "*": {
       "react": [
         "./dist/types/react/index.d.ts"
+      ],
+      "react-native": [
+        "./dist/types/react-native/index.d.ts"
       ],
       "ethereum": [
         "./dist/types/ethereum.d.ts"
@@ -122,6 +131,11 @@
       "types": "./dist/types/react/index.d.ts",
       "import": "./dist/esm/react/index.js",
       "default": "./dist/cjs/react/index.js"
+    },
+    "./react-native": {
+      "types": "./dist/types/react-native/index.d.ts",
+      "import": "./dist/esm/react-native/index.js",
+      "default": "./dist/cjs/react-native/index.js"
     },
     "./ethereum": {
       "types": "./dist/types/ethereum.d.ts",
